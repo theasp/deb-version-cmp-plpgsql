@@ -188,7 +188,7 @@ BEGIN
       CONTINUE;
     END IF;
 
-    -- Compare non-digits 
+    -- Compare non-digits
     IF left_char != right_char THEN
       -- Prioritize letters over other non-digit characters
       IF left_char ~ '[A-Za-z]' AND NOT right_char ~ '[A-Za-z]' THEN
@@ -198,7 +198,7 @@ BEGIN
       END IF;
 
       -- If both are letters or both are non-letters, compare lexicographically
-      RETURN CASE WHEN left_char < right_char THEN -1 ELSE 1 END; 
+      RETURN CASE WHEN left_char < right_char THEN -1 ELSE 1 END;
     END IF;
 
     left_pos := left_pos + 1;
@@ -229,7 +229,7 @@ BEGIN
     RAISE NOTICE 'Comparing part %: left=%, right=%', i, left_parts[i], right_parts[i];
 
     result := deb_version_cmp_segment(left_parts[i], right_parts[i]);
-    RAISE NOTICE 'Result of deb_version_cmp_segment: %', result;
+    RAISE NOTICE 'Result of compare_segment: %', result;
 
     IF result != 0 THEN
       RETURN;  -- Return the result directly, without inverting
@@ -257,7 +257,6 @@ DECLARE
   result integer;
   left_parts text[];
   right_parts text[];
-  debian_result record;
 BEGIN
   -- Handle epochs
   IF left_version ~ ':' THEN
@@ -308,10 +307,11 @@ BEGIN
   -- If upstream versions are equal, compare debian revisions
   IF result = 0 AND (left_debian != '' OR right_debian != '') THEN
     -- For debian revisions, we need to handle ubuntu version components
-    SELECT debian_result.left_parts, debian_result.right_parts, deb_version_cmp_segment(left_debian, right_debian)
-    INTO left_parts, right_parts, result  -- Assign the result of deb_version_cmp_segment to result
-    FROM deb_version_cmp_revision(left_debian, right_debian) AS debian_result; -- Use alias for clarity
+    SELECT *
+    INTO left_parts, right_parts
+    FROM deb_version_cmp_revision(left_debian, right_debian);
 
+    result := deb_version_cmp_segment(left_debian, right_debian); -- Use deb_version_cmp_segment to get the result
     RAISE NOTICE 'Debian revision comparison result: %', result;
 
     -- Check if the last comparison was between numeric segments
