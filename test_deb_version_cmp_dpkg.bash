@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Make sure the test cases in test_cases.bash are all correct
+
 set -e
 
 source test_cases.bash
