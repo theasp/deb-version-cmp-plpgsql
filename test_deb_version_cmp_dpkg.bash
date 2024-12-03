@@ -6,6 +6,8 @@ set -e
 
 source test_cases.bash
 
+RC=0
+
 for test_case in "${test_cases[@]}"; do
   IFS=' ' read -r version1 version2 expected <<< "$test_case"
 
@@ -28,5 +30,8 @@ for test_case in "${test_cases[@]}"; do
     echo "PASS: $version1 vs $version2 (Expected: $expected, Got: $result)"
   else
     echo "FAIL: $version1 vs $version2 (Expected: $expected, Got: $result)"
+    RC=1
   fi
 done
+
+exit "${RC}"
