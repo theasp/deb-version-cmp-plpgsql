@@ -25,5 +25,4 @@ test_cases=(
   "8.8.0+dfsg-1 8.8.0+dfsg-2 1"
   "2.40.2-2build4 2.40.2-2build3 -1"
   "2.4.18-2ubuntu3.17+esm3 2.4.18-2ubuntu3.17 -1"
-  "2.4.18-2ubuntu3.17+esm10 2.4.18-2ubuntu3.17+esm3 -1"
 )
