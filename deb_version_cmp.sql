@@ -10,7 +10,7 @@ DECLARE
   left_num text := '';
   right_num text := '';
 BEGIN
-  RAISE NOTICE 'Comparing parts: left=%, right=%', left_part, right_part;
+  -- RAISE NOTICE 'Comparing parts: left=%, right=%', left_part, right_part;
 
   LOOP
     -- Get current characters
@@ -148,9 +148,9 @@ BEGIN
     IF left_debian = '0' THEN
         left_debian := '';
     END IF;
-    RAISE NOTICE 'Left version split: upstream=%, debian=%', left_upstream, left_debian;
+    -- RAISE NOTICE 'Left version split: upstream=%, debian=%', left_upstream, left_debian;
   ELSE
-    RAISE NOTICE 'Left version has no debian revision: upstream=%', left_upstream;
+    -- RAISE NOTICE 'Left version has no debian revision: upstream=%', left_upstream;
   END IF;
 
   pos := position('-' in reverse(right_upstream));
@@ -161,21 +161,21 @@ BEGIN
     IF right_debian = '0' THEN
         right_debian := '';
     END IF;
-    RAISE NOTICE 'Right version split: upstream=%, debian=%', right_upstream, right_debian;
+    -- RAISE NOTICE 'Right version split: upstream=%, debian=%', right_upstream, right_debian;
   ELSE
-    RAISE NOTICE 'Right version has no debian revision: upstream=%', right_upstream;
+    -- RAISE NOTICE 'Right version has no debian revision: upstream=%', right_upstream;
   END IF;
 
   -- Compare upstream versions
   result := deb_version_cmp_parts(left_upstream, right_upstream);
-  RAISE NOTICE 'Upstream comparison result: %', result;
+  -- RAISE NOTICE 'Upstream comparison result: %', result;
   IF result != 0 THEN
     RETURN -result;
   END IF;
 
   -- Compare debian revisions
   result := deb_version_cmp_parts(left_debian, right_debian);
-  RAISE NOTICE 'Debian revision comparison result: %', result;
+  -- RAISE NOTICE 'Debian revision comparison result: %', result;
   IF result != 0 THEN
     RETURN -result;
   END IF;
